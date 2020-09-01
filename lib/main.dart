@@ -8,7 +8,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
-import 'package:returning_home/maps.dart';
+import 'package:returning_home/map.dart';
 
 import 'tabs_page.dart';
 
@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
 //        analytics: analytics,
 //        observer: observer,
 //      ),
-      home: MapSample(),
+      home: Map(),
     );
   }
 }
