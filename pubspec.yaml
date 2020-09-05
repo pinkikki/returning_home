@@ -10,6 +10,7 @@ dependencies:
     sdk: flutter
   firebase_core:
   firebase_analytics:
+  firebase_auth:
   cloud_firestore:
   geoflutterfire:
   google_maps_flutter:
