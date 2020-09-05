@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -10,35 +12,77 @@ class Map extends StatefulWidget {
 }
 
 class MapState extends State<Map> {
-  Completer<GoogleMapController> _controller = Completer();
+  GoogleMapController _controller;
   CameraPosition _cameraPosition = CameraPosition(
     target: LatLng(0, 0),
     zoom: 1,
   );
 
   bool isLoading = true;
+  Position _pokuriPosition;
 
   @override
   void initState() {
     super.initState();
     _initialPosition();
+    Stream.periodic(Duration(seconds: 10)).listen(
+      (event) async {
+        final position =
+            await getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+        final geo = Geoflutterfire();
+        final point = geo.point(
+            latitude: position.latitude, longitude: position.longitude);
+        await FirebaseFirestore.instance
+            .collection('locations')
+            .doc('1')
+            .update({'position': point.data, 'userId': 'pinkikki'});
+      },
+    );
   }
 
   void _initialPosition() async {
-    Position position =
-        await getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    Query query = FirebaseFirestore.instance
+        .collection('locations')
+        .where('userId', isEqualTo: 'pokuri');
+    query.snapshots().listen(
+      (event) async {
+        final position = event.docs[0].data()['position'];
+        final currentPosition =
+            await getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+        if (isLoading) {
+          _cameraPosition = CameraPosition(
+            target: LatLng(
+                (currentPosition.latitude + position['geopoint'].latitude) / 2,
+                (currentPosition.longitude + position['geopoint'].longitude) /
+                    2),
+            zoom: 10,
+          );
+        } else {
+          _controller.animateCamera(
+            CameraUpdate.newCameraPosition(
+              CameraPosition(
+                target: LatLng(
+                    (currentPosition.latitude + position['geopoint'].latitude) /
+                        2,
+                    (currentPosition.longitude +
+                            position['geopoint'].longitude) /
+                        2),
+                zoom: 10.0,
+              ),
+            ),
+          );
+        }
+        setState(
+          () {
+            _pokuriPosition = Position(
+                latitude: position['geopoint'].latitude,
+                longitude: position['geopoint'].longitude);
 
-    // TODO 相手の位置情報を取得する。とりあえず、渋谷にする。
-    LatLng shibuyaPosition = LatLng(35.658034, 139.701636);
-
-    setState(() {
-      _cameraPosition = CameraPosition(
-        target: LatLng((position.latitude + shibuyaPosition.latitude) / 2,
-            (position.longitude + shibuyaPosition.longitude) / 2),
-        zoom: 10,
-      );
-      isLoading = false;
-    });
+            isLoading = false;
+          },
+        );
+      },
+    );
   }
 
   @override
@@ -55,8 +99,16 @@ class MapState extends State<Map> {
               compassEnabled: true,
               zoomControlsEnabled: true,
               onMapCreated: (GoogleMapController controller) {
-                _controller.complete(controller);
+                _controller = controller;
               },
+              markers: Set()
+                ..add(
+                  Marker(
+                    markerId: MarkerId('1'),
+                    position: LatLng(
+                        _pokuriPosition.latitude, _pokuriPosition.longitude),
+                  ),
+                ),
             ),
     );
   }
