@@ -8,6 +8,8 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:returning_home/auth.dart';
 import 'package:returning_home/login.dart';
 
 import 'tabs_page.dart';
@@ -25,18 +27,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Firebase Analytics Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return Provider<Auth>.value(
+      value: Auth(),
+      child: MaterialApp(
+        title: 'Returning Home',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        navigatorObservers: <NavigatorObserver>[observer],
+        home: Login(),
       ),
-      navigatorObservers: <NavigatorObserver>[observer],
-//      home: MyHomePage(
-//        title: 'Firebase Analytics Demo',
-//        analytics: analytics,
-//        observer: observer,
-//      ),
-      home: Login(),
     );
   }
 }
