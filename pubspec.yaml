@@ -11,6 +11,7 @@ dependencies:
   firebase_core:
   firebase_analytics:
   firebase_auth:
+  firebase_messaging:
   cloud_firestore:
   geoflutterfire:
   google_maps_flutter:

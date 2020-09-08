@@ -25,19 +25,7 @@ class MapState extends State<Map> {
   void initState() {
     super.initState();
     _initialPosition();
-    Stream.periodic(Duration(seconds: 10)).listen(
-      (event) async {
-        final position =
-            await getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-        final geo = Geoflutterfire();
-        final point = geo.point(
-            latitude: position.latitude, longitude: position.longitude);
-        await FirebaseFirestore.instance
-            .collection('locations')
-            .doc('1')
-            .update({'position': point.data, 'userId': 'pinkikki'});
-      },
-    );
+    _sendCurrentPosition();
   }
 
   void _initialPosition() async {
@@ -81,6 +69,22 @@ class MapState extends State<Map> {
             isLoading = false;
           },
         );
+      },
+    );
+  }
+
+  void _sendCurrentPosition() {
+    Stream.periodic(Duration(seconds: 10)).listen(
+      (event) async {
+        final position =
+            await getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+        final geo = Geoflutterfire();
+        final point = geo.point(
+            latitude: position.latitude, longitude: position.longitude);
+        await FirebaseFirestore.instance
+            .collection('locations')
+            .doc('1')
+            .update({'position': point.data, 'userId': 'pinkikki'});
       },
     );
   }

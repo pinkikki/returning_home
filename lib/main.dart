@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:returning_home/auth.dart';
 import 'package:returning_home/login.dart';
+import 'package:returning_home/push.dart';
 
 import 'tabs_page.dart';
 
@@ -35,7 +36,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         navigatorObservers: <NavigatorObserver>[observer],
-        home: Login(),
+        home: Push(),
       ),
     );
   }
