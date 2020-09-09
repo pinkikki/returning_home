@@ -23,7 +23,7 @@ class _MessageState extends State<Message> {
       key: _formKey,
       child: Container(
         child: TextFormField(
-          inputFormatters: [TextTextInputFormatter()],
+          inputFormatters: [TemplateTextInputFormatter()],
         ),
       ),
     ));
