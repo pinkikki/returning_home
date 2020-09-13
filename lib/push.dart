@@ -27,20 +27,21 @@ class PushState extends State<Push> {
 
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) {
-        _buildDialog(context, 'onMessage');
+        _buildDialog(context, 'onMessage. $message');
         return Future.value();
       },
       onResume: (Map<String, dynamic> message) {
-        _buildDialog(context, 'onResume');
+        _buildDialog(context, 'onResume. $message');
         return Future.value();
       },
+        // バックグラウンドで処理をしたい場合
 //      onBackgroundMessage: (message) {
 //        print('onBackgroundMessage');
 //        print(message);
 //        return Future.value();
 //      },
       onLaunch: (Map<String, dynamic> message) {
-        _buildDialog(context, 'onLaunch');
+        _buildDialog(context, 'onLaunch. $message');
         return Future.value();
       },
     );
