@@ -19,6 +19,7 @@ dependencies:
   rxdart:
   provider:
   cupertino_icons:
+  flutter_sfsymbols:
 
 dev_dependencies:
   flutter_test:

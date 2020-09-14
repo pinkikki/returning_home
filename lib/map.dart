@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:returning_home/push_notification_receiver.dart';
 
 class Map extends StatefulWidget {
   @override
@@ -24,11 +25,12 @@ class MapState extends State<Map> {
   @override
   void initState() {
     super.initState();
-    _initialPosition();
+    RemoteNotificationReceiver().configureRemotePush(context);
+    _listenPosition();
     _sendCurrentPosition();
   }
 
-  void _initialPosition() async {
+  void _listenPosition() async {
     Query query = FirebaseFirestore.instance
         .collection('locations')
         .where('userId', isEqualTo: 'pokuri');
