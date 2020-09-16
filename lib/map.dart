@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:returning_home/auth.dart';
 import 'package:returning_home/push_notification_receiver.dart';
 
 class Map extends StatefulWidget {
@@ -31,12 +33,16 @@ class MapState extends State<Map> {
   }
 
   void _listenPosition() async {
-    Query query = FirebaseFirestore.instance
-        .collection('locations')
-        .where('userId', isEqualTo: 'pokuri');
+    final auth = context.read<Auth>();
+    var collection = FirebaseFirestore.instance.collection('locations');
+    final locations = await collection.get();
+    final partner = locations.docs
+        .firstWhere((e) => e.data()['userId'] != auth.credential.user.email)
+        .data()['userId'];
+    final query = collection.where('userId', isEqualTo: partner);
     query.snapshots().listen(
       (event) async {
-        final position = event.docs[0].data()['position'];
+        final position = event.docs.first.data()['position'];
         final currentPosition =
             await getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
         if (isLoading) {
@@ -76,8 +82,9 @@ class MapState extends State<Map> {
   }
 
   void _sendCurrentPosition() {
-    Stream.periodic(Duration(seconds: 10)).listen(
+    Stream.periodic(Duration(minutes: 10)).listen(
       (event) async {
+        final auth = context.read<Auth>();
         final position =
             await getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
         final geo = Geoflutterfire();
@@ -86,7 +93,8 @@ class MapState extends State<Map> {
         await FirebaseFirestore.instance
             .collection('locations')
             .doc('1')
-            .update({'position': point.data, 'userId': 'pinkikki'});
+            .update(
+                {'position': point.data, 'userId': auth.credential.user.email});
       },
     );
   }

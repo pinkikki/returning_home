@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:returning_home/auth.dart';
-import 'package:returning_home/map.dart';
+import 'package:returning_home/top.dart';
 import 'package:returning_home/widgets/unfocus.dart';
 
 class Login extends StatefulWidget {
@@ -42,12 +42,15 @@ class _LoginState extends State<Login> {
                     decoration: InputDecoration(
                       labelText: 'mail address',
                     ),
+                    keyboardType: TextInputType.emailAddress,
                     onSaved: (value) => _form.mailAddress = value,
                   ),
                 ),
                 Container(
                   child: TextFormField(
                     controller: _passwordController,
+                    keyboardType: TextInputType.visiblePassword,
+                    obscureText: true,
                     decoration: InputDecoration(
                       labelText: 'password',
                     ),
@@ -69,12 +72,13 @@ class _LoginState extends State<Login> {
                               .signInWithEmailAndPassword(
                                   email: _form.mailAddress,
                                   password: _form.password);
-                          final auth = Provider.of<Auth>(context, listen: false);
+                          final auth =
+                              Provider.of<Auth>(context, listen: false);
                           auth.isAuth = true;
                           auth.credential = result;
                           Navigator.of(context).pushAndRemoveUntil(
                               MaterialPageRoute(
-                                builder: (context) => Map(),
+                                builder: (context) => Top(),
                               ),
                               (route) => false);
                         } on FirebaseAuthException catch (e) {
