@@ -39,7 +39,6 @@ class _MessageState extends State<Message> {
   }
 
   Widget _buildBody(BuildContext context) {
-    Query query = FirebaseFirestore.instance.collection('messages');
     return Center(
       child: Form(
         key: _formKey,
