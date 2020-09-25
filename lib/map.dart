@@ -27,9 +27,12 @@ class MapState extends State<Map> {
   @override
   void initState() {
     super.initState();
-    RemoteNotificationReceiver().configureRemotePush(context);
     _listenPosition();
     _sendCurrentPosition();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      // 遷移途中でPush通知を許可するダイアログが出てしまうので、レンダリング後に実施する
+      RemoteNotificationReceiver().configureRemotePush(context);
+    });
   }
 
   void _listenPosition() async {

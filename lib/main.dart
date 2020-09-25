@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:returning_home/auth.dart';
 import 'package:returning_home/login.dart';
+import 'package:returning_home/navigation.dart';
 
 import 'tabs_page.dart';
 
@@ -27,13 +28,22 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Provider<Auth>.value(
-      value: Auth(),
+    final navigationController = NavigationController();
+    return MultiProvider(
+      providers: [
+        Provider<Auth>.value(
+          value: Auth(),
+        ),
+        Provider<NavigationController>.value(
+          value: navigationController,
+        ),
+      ],
       child: MaterialApp(
         title: 'Returning Home',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
+        navigatorKey: navigationController.navigationKey,
         navigatorObservers: <NavigatorObserver>[observer],
         home: Login(),
       ),

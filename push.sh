@@ -10,7 +10,7 @@ https://fcm.googleapis.com/fcm/send \
 -d @- << EOF
 {
   "notification": {
-    "body": "this is a body",
+    "body": "this2 is a body",
     "title": "this is a title"
   },
   "priority": "high",
