@@ -20,6 +20,8 @@ dependencies:
   provider:
   cupertino_icons:
   flutter_sfsymbols:
+  flutter_hooks:
+  hooks_riverpod:
 
 dev_dependencies:
   flutter_test:
