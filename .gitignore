@@ -49,3 +49,6 @@ android/app/google-services.json
 
 android/app/src/main/AndroidManifest.xml
 ios/Runner/AppDelegate.swift
+
+# fvm
+.fvm/flutter_sdk
