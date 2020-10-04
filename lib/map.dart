@@ -9,14 +9,14 @@ import 'package:provider/provider.dart';
 import 'package:returning_home/auth.dart';
 import 'package:returning_home/push_notification_receiver.dart';
 
-class Map extends StatefulWidget {
+class MapPage extends StatefulWidget {
   @override
-  State<Map> createState() => MapState();
+  State<MapPage> createState() => MapPageState();
 }
 
-class MapState extends State<Map> {
+class MapPageState extends State<MapPage> {
   GoogleMapController _controller;
-  CameraPosition _cameraPosition = CameraPosition(
+  CameraPosition _cameraPosition = const CameraPosition(
     target: LatLng(0, 0),
     zoom: 1,
   );
@@ -35,38 +35,35 @@ class MapState extends State<Map> {
     });
   }
 
-  void _listenPosition() async {
+  Future<void> _listenPosition() async {
     final auth = context.read<Auth>();
-    var collection = FirebaseFirestore.instance.collection('locations');
+    final collection = FirebaseFirestore.instance.collection('locations');
     final locations = await collection.get();
     final partner = locations.docs
         .firstWhere((e) => e.data()['userId'] != auth.credential.user.email)
-        .data()['userId'];
+        .data()['userId'] as String;
     final query = collection.where('userId', isEqualTo: partner);
     query.snapshots().listen(
       (event) async {
-        final position = event.docs.first.data()['position'];
+        final position =
+            event.docs.first.data()['position'] as Map<String, dynamic>;
+        final geopoint = position['geopoint'] as GeoFirePoint;
         final currentPosition =
             await getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
         if (isLoading) {
           _cameraPosition = CameraPosition(
-            target: LatLng(
-                (currentPosition.latitude + position['geopoint'].latitude) / 2,
-                (currentPosition.longitude + position['geopoint'].longitude) /
-                    2),
+            target: LatLng((currentPosition.latitude + geopoint.latitude) / 2,
+                (currentPosition.longitude + geopoint.longitude) / 2),
             zoom: 10,
           );
         } else {
-          _controller.animateCamera(
+          await _controller.animateCamera(
             CameraUpdate.newCameraPosition(
               CameraPosition(
                 target: LatLng(
-                    (currentPosition.latitude + position['geopoint'].latitude) /
-                        2,
-                    (currentPosition.longitude +
-                            position['geopoint'].longitude) /
-                        2),
-                zoom: 10.0,
+                    (currentPosition.latitude + geopoint.latitude) / 2,
+                    (currentPosition.longitude + geopoint.longitude) / 2),
+                zoom: 10,
               ),
             ),
           );
@@ -74,8 +71,7 @@ class MapState extends State<Map> {
         setState(
           () {
             _pokuriPosition = Position(
-                latitude: position['geopoint'].latitude,
-                longitude: position['geopoint'].longitude);
+                latitude: geopoint.latitude, longitude: geopoint.longitude);
 
             isLoading = false;
           },
@@ -85,7 +81,7 @@ class MapState extends State<Map> {
   }
 
   void _sendCurrentPosition() {
-    Stream.periodic(Duration(minutes: 10)).listen(
+    Stream<void>.periodic(const Duration(minutes: 10)).listen(
       (event) async {
         final auth = context.read<Auth>();
         final position =
@@ -96,17 +92,19 @@ class MapState extends State<Map> {
         await FirebaseFirestore.instance
             .collection('locations')
             .doc('1')
-            .update(
-                {'position': point.data, 'userId': auth.credential.user.email});
+            .update(<String, dynamic>{
+          'position': point.data,
+          'userId': auth.credential.user.email
+        });
       },
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       body: isLoading
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator(),
             )
           : GoogleMap(
@@ -118,8 +116,7 @@ class MapState extends State<Map> {
               onMapCreated: (GoogleMapController controller) {
                 _controller = controller;
               },
-              markers: Set()
-                ..add(
+              markers: <Marker>{}..add(
                   Marker(
                     markerId: MarkerId('1'),
                     position: LatLng(

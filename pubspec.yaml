@@ -3,7 +3,7 @@ description: It's an app to use when you get home.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=2.9.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -22,9 +22,14 @@ dependencies:
   flutter_sfsymbols:
   flutter_hooks:
   hooks_riverpod:
+  get_it:
+  dio:
+  dio_http_cache:
+  enum_to_string:
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  pedantic_mono:
 flutter:
   uses-material-design: true

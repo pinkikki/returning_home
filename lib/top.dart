@@ -20,7 +20,7 @@ class _TopState extends State<Top> {
   Widget _getPage() {
     switch (_selectedIndex) {
       case 0:
-        return Map();
+        return MapPage();
       case 1:
         return Message();
       default:
@@ -38,30 +38,20 @@ class _TopState extends State<Top> {
           BottomNavigationBarItem(
             icon: Container(
               margin: const EdgeInsets.only(top: 10),
-              child: Icon(
+              child: const Icon(
                 SFSymbols.map,
               ),
             ),
-            title: Container(
-              margin: const EdgeInsets.symmetric(vertical: 12),
-              child: const Text(
-                '帰り道',
-              ),
-            ),
+            label: '帰り道',
           ),
           BottomNavigationBarItem(
             icon: Container(
               margin: const EdgeInsets.only(top: 10),
-              child: Icon(
+              child: const Icon(
                 SFSymbols.ellipses_bubble,
               ),
             ),
-            title: Container(
-              margin: const EdgeInsets.symmetric(vertical: 12),
-              child: const Text(
-                'メッセージ',
-              ),
-            ),
+            label: 'メッセージ',
           ),
         ],
         currentIndex: _selectedIndex,

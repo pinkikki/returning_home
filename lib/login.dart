@@ -33,13 +33,13 @@ class _LoginState extends State<Login> {
                   Container(
                     child: Text(
                       errorText,
-                      style: TextStyle(color: Colors.red),
+                      style: const TextStyle(color: Colors.red),
                     ),
                   ),
                 Container(
                   child: TextFormField(
                     controller: _mailAddressController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'mail address',
                     ),
                     keyboardType: TextInputType.emailAddress,
@@ -51,7 +51,7 @@ class _LoginState extends State<Login> {
                     controller: _passwordController,
                     keyboardType: TextInputType.visiblePassword,
                     obscureText: true,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'password',
                     ),
                     onSaved: (value) => _form.password = value,
@@ -60,7 +60,7 @@ class _LoginState extends State<Login> {
                 Container(
                   margin: EdgeInsets.only(top: 20),
                   child: RaisedButton(
-                    child: Text(
+                    child: const Text(
                       'login',
                       style: TextStyle(color: Colors.white),
                     ),
@@ -72,12 +72,11 @@ class _LoginState extends State<Login> {
                               .signInWithEmailAndPassword(
                                   email: _form.mailAddress,
                                   password: _form.password);
-                          final auth =
-                              Provider.of<Auth>(context, listen: false);
-                          auth.isAuth = true;
-                          auth.credential = result;
-                          Navigator.of(context).pushAndRemoveUntil(
-                              MaterialPageRoute(
+                          Provider.of<Auth>(context, listen: false)
+                            ..isAuth = true
+                            ..credential = result;
+                          await Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute<bool>(
                                 builder: (context) => Top(),
                               ),
                               (route) => false);
