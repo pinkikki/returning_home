@@ -16,27 +16,29 @@ class Analytics extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final navigationController = NavigationController();
-    return MultiProvider(
-      providers: [
-        Provider<Auth>.value(
-          value: Auth(),
-        ),
-        Provider<NavigationController>.value(
-          value: navigationController,
-        ),
-      ],
-      child: MaterialApp(
-        title: 'Returning Home',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
-        navigatorKey: navigationController.navigationKey,
-        navigatorObservers: <NavigatorObserver>[observer],
-        home: Login(),
-      ),
-    );
+    return Container();
   }
+  //   final navigationController = NavigationController();
+  //   return MultiProvider(
+  //     providers: [
+  //       Provider<Auth>.value(
+  //         value: Auth(),
+  //       ),
+  //       Provider<NavigationController>.value(
+  //         value: navigationController,
+  //       ),
+  //     ],
+  //     child: MaterialApp(
+  //       title: 'Returning Home',
+  //       theme: ThemeData(
+  //         primarySwatch: Colors.blue,
+  //       ),
+  //       navigatorKey: navigationController.navigationKey,
+  //       navigatorObservers: <NavigatorObserver>[observer],
+  //       home: Login(),
+  //     ),
+  //   );
+  // }
 }
 
 class MyHomePage extends StatefulWidget {

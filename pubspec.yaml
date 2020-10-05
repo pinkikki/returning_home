@@ -17,7 +17,6 @@ dependencies:
   google_maps_flutter:
   geolocator:
   rxdart:
-  provider:
   cupertino_icons:
   flutter_sfsymbols:
   flutter_hooks:

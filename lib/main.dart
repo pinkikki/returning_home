@@ -10,8 +10,8 @@ enum Environment {
 }
 
 void main() {
-  const env = String.fromEnvironment('env', defaultValue: 'local');
+  const env = String.fromEnvironment('env', defaultValue: 'firebase');
   run(
       environment: EnumToString.fromString(Environment.values, env) ??
-          Environment.local);
+          Environment.firebase);
 }

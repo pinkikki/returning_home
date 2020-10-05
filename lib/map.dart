@@ -2,14 +2,15 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:provider/provider.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:returning_home/auth.dart';
 import 'package:returning_home/push_notification_receiver.dart';
 
-class MapPage extends StatefulWidget {
+class MapPage extends StatefulHookWidget {
   @override
   State<MapPage> createState() => MapPageState();
 }
@@ -21,7 +22,7 @@ class MapPageState extends State<MapPage> {
     zoom: 1,
   );
 
-  bool isLoading = true;
+  bool _isLoading = true;
   Position _pokuriPosition;
 
   @override
@@ -36,7 +37,7 @@ class MapPageState extends State<MapPage> {
   }
 
   Future<void> _listenPosition() async {
-    final auth = context.read<Auth>();
+    final auth = context.read(authProvider);
     final collection = FirebaseFirestore.instance.collection('locations');
     final locations = await collection.get();
     final partner = locations.docs
@@ -50,7 +51,7 @@ class MapPageState extends State<MapPage> {
         final geopoint = position['geopoint'] as GeoFirePoint;
         final currentPosition =
             await getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-        if (isLoading) {
+        if (_isLoading) {
           _cameraPosition = CameraPosition(
             target: LatLng((currentPosition.latitude + geopoint.latitude) / 2,
                 (currentPosition.longitude + geopoint.longitude) / 2),
@@ -73,7 +74,7 @@ class MapPageState extends State<MapPage> {
             _pokuriPosition = Position(
                 latitude: geopoint.latitude, longitude: geopoint.longitude);
 
-            isLoading = false;
+            _isLoading = false;
           },
         );
       },
@@ -83,7 +84,7 @@ class MapPageState extends State<MapPage> {
   void _sendCurrentPosition() {
     Stream<void>.periodic(const Duration(minutes: 10)).listen(
       (event) async {
-        final auth = context.read<Auth>();
+        final auth = context.read(authProvider);
         final position =
             await getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
         final geo = Geoflutterfire();
@@ -103,7 +104,7 @@ class MapPageState extends State<MapPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: isLoading
+      body: _isLoading
           ? const Center(
               child: CircularProgressIndicator(),
             )

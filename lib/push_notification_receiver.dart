@@ -1,6 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:returning_home/locator.dart';
 import 'package:returning_home/navigation.dart';
 
 class RemoteNotificationReceiver {
@@ -19,8 +19,7 @@ class RemoteNotificationReceiver {
       // https://github.com/FirebaseExtended/flutterfire/issues/1060
       // https://github.com/flutter/flutter/issues/32698
       if (!isConfigured) {
-        final navigationController =
-            Provider.of<NavigationController>(context, listen: false);
+        final navigationController = locator.get<NavigationController>();
         final c =
             navigationController.navigationKey.currentState.overlay.context;
         final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();

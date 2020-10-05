@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:returning_home/logger.dart';
 import 'package:returning_home/main.dart';
 
@@ -9,6 +10,10 @@ Future<void> run({@required Environment environment}) async {
   WidgetsFlutterBinding.ensureInitialized();
 
   setupLogger();
-  setupLocator(environment: environment);
-  runApp(App());
+  await setupLocator(environment: environment);
+  runApp(
+    ProviderScope(
+      child: App(),
+    ),
+  );
 }
