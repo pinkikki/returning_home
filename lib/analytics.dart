@@ -3,10 +3,6 @@ import 'dart:async';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:returning_home/auth.dart';
-import 'package:returning_home/login.dart';
-import 'package:returning_home/navigation.dart';
 import 'package:returning_home/tabs_page.dart';
 
 class Analytics extends StatelessWidget {
@@ -18,31 +14,31 @@ class Analytics extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container();
   }
-  //   final navigationController = NavigationController();
-  //   return MultiProvider(
-  //     providers: [
-  //       Provider<Auth>.value(
-  //         value: Auth(),
-  //       ),
-  //       Provider<NavigationController>.value(
-  //         value: navigationController,
-  //       ),
-  //     ],
-  //     child: MaterialApp(
-  //       title: 'Returning Home',
-  //       theme: ThemeData(
-  //         primarySwatch: Colors.blue,
-  //       ),
-  //       navigatorKey: navigationController.navigationKey,
-  //       navigatorObservers: <NavigatorObserver>[observer],
-  //       home: Login(),
-  //     ),
-  //   );
-  // }
+//   final navigationController = NavigationController();
+//   return MultiProvider(
+//     providers: [
+//       Provider<Auth>.value(
+//         value: Auth(),
+//       ),
+//       Provider<NavigationController>.value(
+//         value: navigationController,
+//       ),
+//     ],
+//     child: MaterialApp(
+//       title: 'Returning Home',
+//       theme: ThemeData(
+//         primarySwatch: Colors.blue,
+//       ),
+//       navigatorKey: navigationController.navigationKey,
+//       navigatorObservers: <NavigatorObserver>[observer],
+//       home: Login(),
+//     ),
+//   );
+// }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title, this.analytics, this.observer})
+  const MyHomePage({Key key, this.title, this.analytics, this.observer})
       : super(key: key);
 
   final String title;
@@ -113,12 +109,12 @@ class _MyHomePageState extends State<MyHomePage> {
     await analytics.logAddPaymentInfo();
     await analytics.logAddToCart(
       currency: 'USD',
-      value: 123.0,
+      value: 123,
       itemId: 'test item id',
       itemName: 'test item name',
       itemCategory: 'test item category',
       quantity: 5,
-      price: 24.0,
+      price: 24,
       origin: 'test origin',
       itemLocationId: 'test location id',
       destination: 'test destination',
@@ -130,14 +126,14 @@ class _MyHomePageState extends State<MyHomePage> {
       itemName: 'test item name',
       itemCategory: 'test item category',
       quantity: 5,
-      price: 24.0,
-      value: 123.0,
+      price: 24,
+      value: 123,
       currency: 'USD',
       itemLocationId: 'test location id',
     );
     await analytics.logAppOpen();
     await analytics.logBeginCheckout(
-      value: 123.0,
+      value: 123,
       currency: 'USD',
       transactionId: 'test tx id',
       numberOfNights: 2,

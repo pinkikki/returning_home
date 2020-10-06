@@ -16,7 +16,7 @@ class _MessageState extends State<Message> {
   @override
   void initState() {
     super.initState();
-    Query query = FirebaseFirestore.instance.collection('messages');
+    final Query query = FirebaseFirestore.instance.collection('messages');
     query
         .snapshots()
         .map((e) => e.docs.map((e) => e.data()['body'] as String).toList()
@@ -27,7 +27,12 @@ class _MessageState extends State<Message> {
   @override
   void dispose() {
     super.dispose();
-    _subject.close();
+    _closeSubject();
+  }
+
+  Future<void> _closeSubject() async {
+    await _subject.done;
+    await _subject.close();
   }
 
   @override
@@ -45,15 +50,17 @@ class _MessageState extends State<Message> {
         child: Column(
           children: [
             StreamBuilder(
-              // stream: query.snapshots(),
               stream: _subject,
-              builder: (context, snapshot) {
-                if (snapshot.hasError)
-                  return new Text('Error: ${snapshot.error}');
+              builder: (context, AsyncSnapshot<List<String>> snapshot) {
+                if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                }
                 switch (snapshot.connectionState) {
                   case ConnectionState.waiting:
-                    return new Text('Loading...');
-                  default:
+                    return const Text('Loading...');
+                  case ConnectionState.none:
+                    break;
+                  case ConnectionState.active:
                     final querySnapshot = snapshot.data;
                     return Expanded(
                       child: ListView.builder(
@@ -62,15 +69,11 @@ class _MessageState extends State<Message> {
                             Text(querySnapshot[index]),
                       ),
                     );
-                  // QuerySnapshot querySnapshot = snapshot.data;
-                  // return Expanded(
-                  //   child: ListView.builder(
-                  //     itemCount: querySnapshot.size,
-                  //     itemBuilder: (context, index) =>
-                  //         Text(querySnapshot.docs[index].data()['body']),
-                  //   ),
-                  // );
+                    break;
+                  case ConnectionState.done:
+                    break;
                 }
+                return Container();
               },
             ),
             Container(

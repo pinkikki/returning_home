@@ -4,62 +4,62 @@ import 'package:returning_home/locator.dart';
 import 'package:returning_home/navigation.dart';
 
 class RemoteNotificationReceiver {
-  static final RemoteNotificationReceiver _instance =
-      RemoteNotificationReceiver._internal();
-
   factory RemoteNotificationReceiver() => _instance;
 
   RemoteNotificationReceiver._internal();
 
+  static final RemoteNotificationReceiver _instance =
+      RemoteNotificationReceiver._internal();
+
   bool isConfigured = false;
 
-  void configureRemotePush(BuildContext context) async {
+  Future<void> configureRemotePush(BuildContext context) async {
     try {
       // onLaunchが何度もコールバックされてしまう現象の対処
       // https://github.com/FirebaseExtended/flutterfire/issues/1060
       // https://github.com/flutter/flutter/issues/32698
+      // FIXME: FirebaseMessagingをシングルトンにすれば良い気がする
       if (!isConfigured) {
         final navigationController = locator.get<NavigationController>();
         final c =
             navigationController.navigationKey.currentState.overlay.context;
-        final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-        _firebaseMessaging.configure(
-          onMessage: (Map<String, dynamic> message) {
-            _buildDialog(c, 'onMessage. $message');
-            return Future.value();
-          },
-          onResume: (Map<String, dynamic> message) {
-            _buildDialog(c, 'onResume. $message');
-            return Future.value();
-          },
-          onLaunch: (Map<String, dynamic> message) {
-            _buildDialog(c, 'onLaunch. $message');
-            return Future.value();
-          },
-          // バックグラウンドで処理をしたい場合
-          onBackgroundMessage: onBackgroundMessage,
-        );
+        final firebaseMessaging = FirebaseMessaging()
+          ..configure(
+            onMessage: (Map<String, dynamic> message) {
+              _buildDialog(c, 'onMessage. $message');
+              return Future<void>.value();
+            },
+            onResume: (Map<String, dynamic> message) {
+              _buildDialog(c, 'onResume. $message');
+              return Future<void>.value();
+            },
+            onLaunch: (Map<String, dynamic> message) {
+              _buildDialog(c, 'onLaunch. $message');
+              return Future<void>.value();
+            },
+            // バックグラウンドで処理をしたい場合
+            onBackgroundMessage: onBackgroundMessage,
+          )
+          ..requestNotificationPermissions(
+            const IosNotificationSettings(
+              sound: true,
+              badge: true,
+              alert: true,
+            ),
+          )
+          ..onIosSettingsRegistered.listen(
+            (IosNotificationSettings setting) {
+              debugPrint('Settings registered: $setting');
+            },
+          );
 
-        _firebaseMessaging.requestNotificationPermissions(
-          const IosNotificationSettings(
-            sound: true,
-            badge: true,
-            alert: true,
-          ),
-        );
+        await firebaseMessaging.subscribeToTopic('/topics/all');
 
-        _firebaseMessaging.onIosSettingsRegistered.listen(
-          (IosNotificationSettings setting) {
-            debugPrint('Settings registered: $setting');
-          },
-        );
+        print(await firebaseMessaging.getToken());
 
-        print(await _firebaseMessaging.getToken());
-
-        _firebaseMessaging.subscribeToTopic('/topics/all');
         isConfigured = true;
       }
-    } catch (e) {
+    } on Exception catch (e) {
       _buildDialog(context, e.toString());
     }
   }
@@ -70,14 +70,14 @@ class RemoteNotificationReceiver {
   }
 
   void _buildDialog(BuildContext context, String message) {
-    showDialog(
+    showDialog<void>(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
-        return new AlertDialog(
-          content: new Text('Message: $message'),
+        return AlertDialog(
+          content: Text('Message: $message'),
           actions: <Widget>[
-            new FlatButton(
+            FlatButton(
               child: const Text('OK'),
               onPressed: () {
                 Navigator.pop(context, false);

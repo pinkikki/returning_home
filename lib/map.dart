@@ -48,9 +48,10 @@ class MapPageState extends State<MapPage> {
       (event) async {
         final position =
             event.docs.first.data()['position'] as Map<String, dynamic>;
-        final geopoint = position['geopoint'] as GeoFirePoint;
-        final currentPosition =
-            await getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+        final geopoint = position['geopoint'] as GeoPoint;
+        // final currentPosition =
+        //     await getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+        final currentPosition = Position(longitude: 0, latitude: 0);
         if (_isLoading) {
           _cameraPosition = CameraPosition(
             target: LatLng((currentPosition.latitude + geopoint.latitude) / 2,
