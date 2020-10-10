@@ -1,12 +1,13 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/all.dart';
-import 'package:returning_home/auth.dart';
+import 'package:returning_home/frameworks/auth.dart';
+import 'package:returning_home/infra/providers.dart';
 import 'package:returning_home/locator.dart';
-import 'package:returning_home/navigation.dart';
-import 'package:returning_home/top.dart';
-import 'package:returning_home/widgets/unfocus.dart';
+import 'package:returning_home/ui/pages/auth.dart';
+import 'package:returning_home/ui/pages/navigation.dart';
+import 'package:returning_home/ui/pages/top.dart';
+import 'package:returning_home/ui/widgets/unfocus.dart';
 
 class Login extends StatefulHookWidget {
   @override
@@ -23,7 +24,6 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    final auth = useProvider(authProvider);
     return Scaffold(
       body: UnFocus(
         child: Container(
@@ -72,13 +72,13 @@ class _LoginState extends State<Login> {
                       if (_formKey.currentState.validate()) {
                         _formKey.currentState.save();
                         try {
-                          final result = await FirebaseAuth.instance
-                              .signInWithEmailAndPassword(
-                                  email: _form.mailAddress,
-                                  password: _form.password);
-                          auth
-                            ..isAuth = true
-                            ..credential = result;
+                          final auth = context.read(authProvider);
+                          final authState = context.read(authStateProvider);
+                          final result = await auth.signIn(
+                            _form.mailAddress,
+                            _form.password,
+                          );
+                          authState.state = result;
                           final route = MaterialPageRoute<bool>(
                             builder: (context) => Top(),
                           );
@@ -87,7 +87,7 @@ class _LoginState extends State<Login> {
                               .navigationKey
                               .currentState
                               .pushAndRemoveUntil(route, (route) => false);
-                        } on FirebaseAuthException catch (e) {
+                        } on AuthException catch (e) {
                           setState(
                             () {
                               hasError = true;

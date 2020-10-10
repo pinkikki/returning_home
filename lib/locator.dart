@@ -4,7 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 import 'package:returning_home/main.dart';
-import 'package:returning_home/navigation.dart';
+import 'package:returning_home/ui/pages/navigation.dart';
 
 GetIt locator = GetIt.instance;
 

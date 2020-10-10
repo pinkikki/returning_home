@@ -7,8 +7,8 @@ import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:returning_home/auth.dart';
-import 'package:returning_home/push_notification_receiver.dart';
+import 'package:returning_home/ui/pages/auth.dart';
+import 'package:returning_home/ui/pages/push_notification_receiver.dart';
 
 class MapPage extends StatefulHookWidget {
   @override
@@ -37,11 +37,11 @@ class MapPageState extends State<MapPage> {
   }
 
   Future<void> _listenPosition() async {
-    final auth = context.read(authProvider);
+    final authState = context.read(authStateProvider);
     final collection = FirebaseFirestore.instance.collection('locations');
     final locations = await collection.get();
     final partner = locations.docs
-        .firstWhere((e) => e.data()['userId'] != auth.credential.user.email)
+        .firstWhere((e) => e.data()['userId'] != authState.state.account.userId)
         .data()['userId'] as String;
     final query = collection.where('userId', isEqualTo: partner);
     query.snapshots().listen(
@@ -85,7 +85,7 @@ class MapPageState extends State<MapPage> {
   void _sendCurrentPosition() {
     Stream<void>.periodic(const Duration(minutes: 10)).listen(
       (event) async {
-        final auth = context.read(authProvider);
+        final authState = context.read(authStateProvider);
         final position =
             await getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
         final geo = Geoflutterfire();
@@ -96,7 +96,7 @@ class MapPageState extends State<MapPage> {
             .doc('1')
             .update(<String, dynamic>{
           'position': point.data,
-          'userId': auth.credential.user.email
+          'userId': authState.state.account.userId,
         });
       },
     );

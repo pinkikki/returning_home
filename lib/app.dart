@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:returning_home/locator.dart';
-import 'package:returning_home/login.dart';
-import 'package:returning_home/navigation.dart';
+import 'package:returning_home/ui/pages/login.dart';
+import 'package:returning_home/ui/pages/navigation.dart';
 
 class App extends StatelessWidget {
   @override

@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
-import 'package:returning_home/tabs_page.dart';
+import 'package:returning_home/ui/pages/tabs_page.dart';
 
 class Analytics extends StatelessWidget {
   static FirebaseAnalytics analytics = FirebaseAnalytics();

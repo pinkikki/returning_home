@@ -1,7 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:returning_home/locator.dart';
-import 'package:returning_home/navigation.dart';
+import 'package:returning_home/ui/pages/navigation.dart';
 
 class RemoteNotificationReceiver {
   factory RemoteNotificationReceiver() => _instance;

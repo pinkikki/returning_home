@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:returning_home/logger.dart';
 import 'package:returning_home/main.dart';
+import 'package:returning_home/logger.dart';
 
 import 'app.dart';
 import 'locator.dart';

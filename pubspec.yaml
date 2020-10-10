@@ -4,6 +4,7 @@ version: 1.0.0+1
 
 environment:
   sdk: ">=2.9.0 <3.0.0"
+  flutter: ">=1.22.0 <1.23.0"
 
 dependencies:
   flutter:
@@ -25,10 +26,14 @@ dependencies:
   dio:
   dio_http_cache:
   enum_to_string:
+  freezed_annotation:
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   pedantic_mono:
+  freezed:
+  build_runner:
+  json_serializable:
 flutter:
   uses-material-design: true

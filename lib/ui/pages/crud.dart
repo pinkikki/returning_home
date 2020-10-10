@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:hooks_riverpod/all.dart';
-import 'package:returning_home/auth.dart';
+import 'package:returning_home/ui/pages/auth.dart';
 
 class Crud extends StatefulHookWidget {
   @override
@@ -13,9 +13,9 @@ class Crud extends StatefulHookWidget {
 class _CrudState extends State<Crud> {
   @override
   Widget build(BuildContext context) {
-    final auth = useProvider(authProvider);
+    final authState = useProvider(authStateProvider);
     Query query = FirebaseFirestore.instance.collection('locations');
-    query = query.where('userId', isEqualTo: auth.credential.user.email);
+    query = query.where('userId', isEqualTo: authState.state.account.userId);
     return Scaffold(
       body: Column(
         children: <Widget>[
@@ -28,7 +28,7 @@ class _CrudState extends State<Crud> {
                   geo.point(latitude: 35.658034, longitude: 139.701636);
               await firestore.collection('locations').add(<String, dynamic>{
                 'position': point.data,
-                'userId': auth.credential.user.email
+                'userId': authState.state.account.userId,
               });
             },
           ),

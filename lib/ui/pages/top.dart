@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_sfsymbols/flutter_sfsymbols.dart';
-import 'package:returning_home/map.dart';
-import 'package:returning_home/message.dart';
+import 'package:returning_home/ui/pages/map.dart';
+import 'package:returning_home/ui/pages/message.dart';
 
 class Top extends StatefulWidget {
   @override
@@ -43,10 +43,7 @@ class _TopState extends State<Top> {
               ),
             ),
             label: '帰り道',
-          ),
-          BottomNavigationBarItem(
-            icon: Container(
-              margin: const EdgeInsets.only(top: 10),
+          ), BottomNavigationBarItem( icon: Container( margin: const EdgeInsets.only(top: 10),
               child: const Icon(
                 SFSymbols.ellipses_bubble,
               ),

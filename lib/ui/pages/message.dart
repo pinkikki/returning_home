@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:returning_home/widgets/text_input_formatter.dart';
+import 'package:returning_home/ui/widgets/text_input_formatter.dart';
 import 'package:rxdart/rxdart.dart';
 
 class Message extends StatefulWidget {
