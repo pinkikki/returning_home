@@ -7,7 +7,7 @@ import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:returning_home/ui/pages/auth.dart';
+import 'package:returning_home/ui/notifiers/auth_notifier.dart';
 import 'package:returning_home/ui/pages/push_notification_receiver.dart';
 
 class MapPage extends StatefulHookWidget {
@@ -36,8 +36,9 @@ class MapPageState extends State<MapPage> {
     });
   }
 
+
   Future<void> _listenPosition() async {
-    final authState = context.read(authStateProvider);
+    final authState = context.read(authStateNotifierProvider);
     final collection = FirebaseFirestore.instance.collection('locations');
     final locations = await collection.get();
     final partner = locations.docs
@@ -85,7 +86,7 @@ class MapPageState extends State<MapPage> {
   void _sendCurrentPosition() {
     Stream<void>.periodic(const Duration(minutes: 10)).listen(
       (event) async {
-        final authState = context.read(authStateProvider);
+        final authState = context.read(authStateNotifierProvider);
         final position =
             await getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
         final geo = Geoflutterfire();

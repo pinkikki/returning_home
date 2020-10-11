@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:hooks_riverpod/all.dart';
-import 'package:returning_home/ui/pages/auth.dart';
+import 'package:returning_home/ui/notifiers/auth_notifier.dart';
 
 class Crud extends StatefulHookWidget {
   @override
@@ -13,7 +13,7 @@ class Crud extends StatefulHookWidget {
 class _CrudState extends State<Crud> {
   @override
   Widget build(BuildContext context) {
-    final authState = useProvider(authStateProvider);
+    final authState = useProvider(authStateNotifierProvider);
     Query query = FirebaseFirestore.instance.collection('locations');
     query = query.where('userId', isEqualTo: authState.state.account.userId);
     return Scaffold(
