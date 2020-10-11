@@ -4,7 +4,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get_it/get_it.dart';
 import 'package:returning_home/main.dart';
-import 'package:returning_home/ui/pages/navigation.dart';
 
 GetIt locator = GetIt.instance;
 
@@ -22,8 +21,6 @@ Future<void> setupLocator({@required Environment environment}) async {
 }
 
 void _default() {
-  locator.registerLazySingleton<NavigationController>(
-      () => NavigationController());
 }
 
 Future<void> _firebase() async {

@@ -1,7 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:returning_home/locator.dart';
-import 'package:returning_home/ui/pages/navigation.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:returning_home/ui/providers/navigator.dart';
 
 class RemoteNotificationReceiver {
   factory RemoteNotificationReceiver() => _instance;
@@ -20,9 +20,8 @@ class RemoteNotificationReceiver {
       // https://github.com/flutter/flutter/issues/32698
       // FIXME: FirebaseMessagingをシングルトンにすれば良い気がする
       if (!isConfigured) {
-        final navigationController = locator.get<NavigationController>();
         final c =
-            navigationController.navigationKey.currentState.overlay.context;
+            context.read(navigatorKeyProvider).currentState.descendantContext;
         final firebaseMessaging = FirebaseMessaging()
           ..configure(
             onMessage: (Map<String, dynamic> message) {

@@ -4,6 +4,7 @@ import 'package:returning_home/ui/pages/map.dart';
 import 'package:returning_home/ui/pages/message.dart';
 
 class Top extends StatefulWidget {
+  static const routeName = '/top';
   @override
   State<StatefulWidget> createState() => _TopState();
 }
