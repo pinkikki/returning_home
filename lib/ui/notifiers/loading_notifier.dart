@@ -11,6 +11,6 @@ final loadingNotifierProvider =
 abstract class LoadingState with _$LoadingState {
   const factory LoadingState({
     @Default(false) bool loadingAfterBuild,
-    @Default(false) bool loadingOnInitialization,
+    @Default(true) bool loadingOnInitialization,
   }) = _LoadingState;
 }

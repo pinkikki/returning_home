@@ -4,13 +4,14 @@ import 'package:rxdart/streams.dart';
 import 'package:rxdart/subjects.dart';
 
 class LocationObserver {
-  LocationObserver(LocationRepository repo) : _location = BehaviorSubject() {
-    repo.stream().pipe(_location);
+  LocationObserver(LocationRepository repo, String userId)
+      : _location = BehaviorSubject() {
+    repo.streamByUserId(userId).pipe(_location);
   }
 
   final BehaviorSubject<Location> _location;
 
-  ValueStream<Location> get locations => _location;
+  ValueStream<Location> get location => _location;
 
   void dispose() {
     _location.close();

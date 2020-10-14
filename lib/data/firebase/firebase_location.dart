@@ -3,12 +3,11 @@ import 'package:returning_home/data/model/location.dart';
 import 'package:returning_home/data/model/location_repository.dart';
 
 class FirebaseLocation implements LocationRepository {
+  final collection = FirebaseFirestore.instance.collection('locations');
+
   @override
-  Stream<Location> stream() {
-    return FirebaseFirestore.instance
-        .collection('locations')
-        .snapshots()
-        .map((event) {
+  Stream<Location> streamByUserId(String userId) {
+    return collection.snapshots().map((event) {
       final data = event.docs.first.data();
       final userId = data['userId'] as String;
       final position = data['position'] as Map<String, dynamic>;
@@ -23,5 +22,13 @@ class FirebaseLocation implements LocationRepository {
               )),
           userId: userId);
     });
+  }
+
+  @override
+  Future<String> fetchPartner(String userId) async {
+    final locations = await collection.get();
+    return locations.docs
+        .firstWhere((e) => e.data()['userId'] != userId)
+        .data()['userId'] as String;
   }
 }

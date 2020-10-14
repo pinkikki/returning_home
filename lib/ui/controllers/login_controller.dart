@@ -36,14 +36,16 @@ class LoginController extends AppController {
         password,
       );
       _authState.state = result;
+      loadingNotifier.state =
+          loadingNotifier.state.copyWith(loadingAfterBuild: false);
+      navigatorKey.currentState.pop();
       await navigatorKey.currentState
           .pushNamedAndRemoveUntil(Top.routeName, (route) => false);
     } on AuthException catch (e) {
-      errorNotifier.state =
-          AppError(message: 'Failed to authenticate.', cause: e);
-    } finally {
       loadingNotifier.state =
           loadingNotifier.state.copyWith(loadingAfterBuild: false);
+      errorNotifier.state =
+          AppError(message: 'Failed to authenticate.', cause: e);
     }
   }
 }

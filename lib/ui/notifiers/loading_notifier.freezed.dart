@@ -15,7 +15,7 @@ class _$LoadingStateTearOff {
 
 // ignore: unused_element
   _LoadingState call(
-      {bool loadingAfterBuild = false, bool loadingOnInitialization = false}) {
+      {bool loadingAfterBuild = false, bool loadingOnInitialization = true}) {
     return _LoadingState(
       loadingAfterBuild: loadingAfterBuild,
       loadingOnInitialization: loadingOnInitialization,
@@ -106,14 +106,14 @@ class __$LoadingStateCopyWithImpl<$Res> extends _$LoadingStateCopyWithImpl<$Res>
 /// @nodoc
 class _$_LoadingState with DiagnosticableTreeMixin implements _LoadingState {
   const _$_LoadingState(
-      {this.loadingAfterBuild = false, this.loadingOnInitialization = false})
+      {this.loadingAfterBuild = false, this.loadingOnInitialization = true})
       : assert(loadingAfterBuild != null),
         assert(loadingOnInitialization != null);
 
   @JsonKey(defaultValue: false)
   @override
   final bool loadingAfterBuild;
-  @JsonKey(defaultValue: false)
+  @JsonKey(defaultValue: true)
   @override
   final bool loadingOnInitialization;
 

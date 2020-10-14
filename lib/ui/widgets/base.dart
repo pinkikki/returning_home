@@ -5,7 +5,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:returning_home/frameworks/error.dart';
 import 'package:returning_home/ui/notifiers/error_notifier.dart';
 import 'package:returning_home/ui/notifiers/loading_notifier.dart';
-import 'package:returning_home/ui/providers/navigator.dart';
 import 'package:returning_home/ui/widgets/loading.dart';
 import 'package:returning_home/ui/widgets/unfocus.dart';
 
@@ -44,13 +43,9 @@ class BaseViewOnScaffold extends HookWidget {
             );
             return;
           }
-          context.read(navigatorKeyProvider).currentState.pop();
         },
         child: UnFocus(
-          child:
-              useProvider(loadingNotifierProvider).state.loadingOnInitialization
-                  ? Loading()
-                  : child,
+          child: child,
         ),
       ),
     );
