@@ -13,7 +13,7 @@ import 'package:rxdart/streams.dart';
 part 'map_controller.freezed.dart';
 
 final mapControllerProvider =
-    StateNotifierProvider((ref) => MapController(ref.read));
+    StateNotifierProvider.autoDispose((ref) => MapController(ref.read));
 
 class MapController extends AppStateNotifier<MapState> {
   MapController(Reader read) : super(const MapState(), read) {
@@ -32,9 +32,6 @@ class MapController extends AppStateNotifier<MapState> {
   GoogleMapController googleMapController;
 
   Future<void> _init() async {
-    // TODO これがあるとエラーになる
-    // loadingNotifier.state =
-    //     loadingNotifier.state.copyWith(loadingOnInitialization: true);
     final partner =
         await _locationRepository.fetchPartner(_authState.state.account.userId);
     _location = read(locationObserverProvider.call(partner)).location;
@@ -46,7 +43,7 @@ class MapController extends AppStateNotifier<MapState> {
 
     _location.listen((event) async {
       final geopoint = event.position.geopoint;
-      if (loadingNotifier.state.loadingOnInitialization) {
+      if (state.isLoading) {
         state = state.copyWith(
             cameraPosition: CameraPosition(
           target: LatLng((currentPosition.latitude + geopoint.latitude) / 2,
@@ -66,19 +63,27 @@ class MapController extends AppStateNotifier<MapState> {
       }
 
       state = state.copyWith(
-          partnerGeopoint: Geopoint(
-              latitude: geopoint.latitude, longitude: geopoint.longitude));
-
-      loadingNotifier.state =
-          loadingNotifier.state.copyWith(loadingOnInitialization: false);
+        partnerGeopoint: Geopoint(
+            latitude: geopoint.latitude, longitude: geopoint.longitude),
+        isLoading: false,
+      );
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    googleMapController.dispose();
   }
 }
 
 @freezed
 abstract class MapState with _$MapState {
   const factory MapState({
-    Geopoint partnerGeopoint,
+    @Default(true)
+        bool isLoading,
+    @Default(Geopoint(latitude: 0, longitude: 0))
+        Geopoint partnerGeopoint,
     @Default(
       CameraPosition(
         target: LatLng(0, 0),

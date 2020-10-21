@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:returning_home/frameworks/error.dart';
 import 'package:returning_home/ui/notifiers/error_notifier.dart';
 import 'package:returning_home/ui/notifiers/loading_notifier.dart';
 import 'package:returning_home/ui/widgets/loading.dart';
@@ -18,19 +17,25 @@ class BaseViewOnScaffold extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ProviderListener<StateController<AppError>>(
+    return ProviderListener<StateController<ErrorState>>(
       provider: errorStateNotifierProvider,
-      onChange: (context, error) {
-        Scaffold.of(context).showSnackBar(
-          SnackBar(
-            content: Text(error.state.message),
-          ),
-        );
+      onChange: (context, errorState) {
+        if (errorState.state.hasError) {
+          final scaffoldFeatureController = Scaffold.of(context).showSnackBar(
+            SnackBar(
+              content: Text(errorState.state.appError.message),
+            ),
+          );
+          scaffoldFeatureController.closed.whenComplete(() {
+            context.read(errorStateNotifierProvider).state =
+                const ErrorState(hasError: false);
+          });
+        }
       },
       child: ProviderListener<StateController<LoadingState>>(
         provider: loadingNotifierProvider,
         onChange: (context, loadingState) {
-          if (loadingState.state.loadingAfterBuild) {
+          if (loadingState.state.isLoadingOverlay) {
             showDialog<void>(
               context: context,
               barrierDismissible: false,

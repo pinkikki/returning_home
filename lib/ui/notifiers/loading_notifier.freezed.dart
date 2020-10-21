@@ -14,11 +14,9 @@ class _$LoadingStateTearOff {
   const _$LoadingStateTearOff();
 
 // ignore: unused_element
-  _LoadingState call(
-      {bool loadingAfterBuild = false, bool loadingOnInitialization = true}) {
+  _LoadingState call({bool isLoadingOverlay = false}) {
     return _LoadingState(
-      loadingAfterBuild: loadingAfterBuild,
-      loadingOnInitialization: loadingOnInitialization,
+      isLoadingOverlay: isLoadingOverlay,
     );
   }
 }
@@ -29,8 +27,7 @@ const $LoadingState = _$LoadingStateTearOff();
 
 /// @nodoc
 mixin _$LoadingState {
-  bool get loadingAfterBuild;
-  bool get loadingOnInitialization;
+  bool get isLoadingOverlay;
 
   $LoadingStateCopyWith<LoadingState> get copyWith;
 }
@@ -40,7 +37,7 @@ abstract class $LoadingStateCopyWith<$Res> {
   factory $LoadingStateCopyWith(
           LoadingState value, $Res Function(LoadingState) then) =
       _$LoadingStateCopyWithImpl<$Res>;
-  $Res call({bool loadingAfterBuild, bool loadingOnInitialization});
+  $Res call({bool isLoadingOverlay});
 }
 
 /// @nodoc
@@ -53,16 +50,12 @@ class _$LoadingStateCopyWithImpl<$Res> implements $LoadingStateCopyWith<$Res> {
 
   @override
   $Res call({
-    Object loadingAfterBuild = freezed,
-    Object loadingOnInitialization = freezed,
+    Object isLoadingOverlay = freezed,
   }) {
     return _then(_value.copyWith(
-      loadingAfterBuild: loadingAfterBuild == freezed
-          ? _value.loadingAfterBuild
-          : loadingAfterBuild as bool,
-      loadingOnInitialization: loadingOnInitialization == freezed
-          ? _value.loadingOnInitialization
-          : loadingOnInitialization as bool,
+      isLoadingOverlay: isLoadingOverlay == freezed
+          ? _value.isLoadingOverlay
+          : isLoadingOverlay as bool,
     ));
   }
 }
@@ -74,7 +67,7 @@ abstract class _$LoadingStateCopyWith<$Res>
           _LoadingState value, $Res Function(_LoadingState) then) =
       __$LoadingStateCopyWithImpl<$Res>;
   @override
-  $Res call({bool loadingAfterBuild, bool loadingOnInitialization});
+  $Res call({bool isLoadingOverlay});
 }
 
 /// @nodoc
@@ -89,37 +82,28 @@ class __$LoadingStateCopyWithImpl<$Res> extends _$LoadingStateCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object loadingAfterBuild = freezed,
-    Object loadingOnInitialization = freezed,
+    Object isLoadingOverlay = freezed,
   }) {
     return _then(_LoadingState(
-      loadingAfterBuild: loadingAfterBuild == freezed
-          ? _value.loadingAfterBuild
-          : loadingAfterBuild as bool,
-      loadingOnInitialization: loadingOnInitialization == freezed
-          ? _value.loadingOnInitialization
-          : loadingOnInitialization as bool,
+      isLoadingOverlay: isLoadingOverlay == freezed
+          ? _value.isLoadingOverlay
+          : isLoadingOverlay as bool,
     ));
   }
 }
 
 /// @nodoc
 class _$_LoadingState with DiagnosticableTreeMixin implements _LoadingState {
-  const _$_LoadingState(
-      {this.loadingAfterBuild = false, this.loadingOnInitialization = true})
-      : assert(loadingAfterBuild != null),
-        assert(loadingOnInitialization != null);
+  const _$_LoadingState({this.isLoadingOverlay = false})
+      : assert(isLoadingOverlay != null);
 
   @JsonKey(defaultValue: false)
   @override
-  final bool loadingAfterBuild;
-  @JsonKey(defaultValue: true)
-  @override
-  final bool loadingOnInitialization;
+  final bool isLoadingOverlay;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'LoadingState(loadingAfterBuild: $loadingAfterBuild, loadingOnInitialization: $loadingOnInitialization)';
+    return 'LoadingState(isLoadingOverlay: $isLoadingOverlay)';
   }
 
   @override
@@ -127,29 +111,22 @@ class _$_LoadingState with DiagnosticableTreeMixin implements _LoadingState {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'LoadingState'))
-      ..add(DiagnosticsProperty('loadingAfterBuild', loadingAfterBuild))
-      ..add(DiagnosticsProperty(
-          'loadingOnInitialization', loadingOnInitialization));
+      ..add(DiagnosticsProperty('isLoadingOverlay', isLoadingOverlay));
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is _LoadingState &&
-            (identical(other.loadingAfterBuild, loadingAfterBuild) ||
+            (identical(other.isLoadingOverlay, isLoadingOverlay) ||
                 const DeepCollectionEquality()
-                    .equals(other.loadingAfterBuild, loadingAfterBuild)) &&
-            (identical(
-                    other.loadingOnInitialization, loadingOnInitialization) ||
-                const DeepCollectionEquality().equals(
-                    other.loadingOnInitialization, loadingOnInitialization)));
+                    .equals(other.isLoadingOverlay, isLoadingOverlay)));
   }
 
   @override
   int get hashCode =>
       runtimeType.hashCode ^
-      const DeepCollectionEquality().hash(loadingAfterBuild) ^
-      const DeepCollectionEquality().hash(loadingOnInitialization);
+      const DeepCollectionEquality().hash(isLoadingOverlay);
 
   @override
   _$LoadingStateCopyWith<_LoadingState> get copyWith =>
@@ -157,13 +134,10 @@ class _$_LoadingState with DiagnosticableTreeMixin implements _LoadingState {
 }
 
 abstract class _LoadingState implements LoadingState {
-  const factory _LoadingState(
-      {bool loadingAfterBuild, bool loadingOnInitialization}) = _$_LoadingState;
+  const factory _LoadingState({bool isLoadingOverlay}) = _$_LoadingState;
 
   @override
-  bool get loadingAfterBuild;
-  @override
-  bool get loadingOnInitialization;
+  bool get isLoadingOverlay;
   @override
   _$LoadingStateCopyWith<_LoadingState> get copyWith;
 }

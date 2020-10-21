@@ -5,6 +5,7 @@ import 'package:returning_home/frameworks/auth.dart';
 import 'package:returning_home/frameworks/error.dart';
 import 'package:returning_home/ui/controllers/app_controller.dart';
 import 'package:returning_home/ui/notifiers/auth_notifier.dart';
+import 'package:returning_home/ui/notifiers/error_notifier.dart';
 import 'package:returning_home/ui/pages/top.dart';
 
 final loginControllerProvider = Provider((ref) => LoginController(ref.read));
@@ -29,7 +30,7 @@ class LoginController extends AppController {
 
   Future<void> signIn(String email, String password) async {
     loadingNotifier.state =
-        loadingNotifier.state.copyWith(loadingAfterBuild: true);
+        loadingNotifier.state.copyWith(isLoadingOverlay: true);
     try {
       final result = await _auth.signIn(
         email,
@@ -37,15 +38,21 @@ class LoginController extends AppController {
       );
       _authState.state = result;
       loadingNotifier.state =
-          loadingNotifier.state.copyWith(loadingAfterBuild: false);
+          loadingNotifier.state.copyWith(isLoadingOverlay: false);
       navigatorKey.currentState.pop();
       await navigatorKey.currentState
           .pushNamedAndRemoveUntil(Top.routeName, (route) => false);
     } on AuthException catch (e) {
       loadingNotifier.state =
-          loadingNotifier.state.copyWith(loadingAfterBuild: false);
-      errorNotifier.state =
-          AppError(message: 'Failed to authenticate.', cause: e);
+          loadingNotifier.state.copyWith(isLoadingOverlay: false);
+      navigatorKey.currentState.pop();
+      errorNotifier.state = ErrorState(
+        hasError: true,
+        appError: AppError(
+          message: 'Failed to authenticate.',
+          cause: e,
+        ),
+      );
     }
   }
 }

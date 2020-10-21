@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:returning_home/ui/widgets/text_input_formatter.dart';
 import 'package:rxdart/rxdart.dart';
 
-class Message extends StatefulWidget {
+class Message extends StatefulHookWidget {
   @override
   State<StatefulWidget> createState() => _MessageState();
 }

@@ -10,7 +10,6 @@ final loadingNotifierProvider =
 @freezed
 abstract class LoadingState with _$LoadingState {
   const factory LoadingState({
-    @Default(false) bool loadingAfterBuild,
-    @Default(true) bool loadingOnInitialization,
+    @Default(false) bool isLoadingOverlay,
   }) = _LoadingState;
 }

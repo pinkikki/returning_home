@@ -1,6 +1,5 @@
 import 'package:flutter/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:returning_home/frameworks/error.dart';
 import 'package:returning_home/ui/notifiers/error_notifier.dart';
 import 'package:returning_home/ui/notifiers/loading_notifier.dart';
 import 'package:returning_home/ui/providers/navigator.dart';
@@ -13,7 +12,7 @@ abstract class AppController {
   }
 
   final Reader read;
-  StateController<AppError> errorNotifier;
+  StateController<ErrorState> errorNotifier;
   StateController<LoadingState> loadingNotifier;
   GlobalKey<NavigatorState> navigatorKey;
 }
@@ -26,7 +25,7 @@ abstract class AppStateNotifier<T> extends StateNotifier<T> {
   }
 
   final Reader read;
-  StateController<AppError> errorNotifier;
+  StateController<ErrorState> errorNotifier;
   StateController<LoadingState> loadingNotifier;
   GlobalKey<NavigatorState> navigatorKey;
 }

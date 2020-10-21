@@ -15,10 +15,12 @@ class _$MapStateTearOff {
 
 // ignore: unused_element
   _MapState call(
-      {Geopoint partnerGeopoint,
+      {bool isLoading = true,
+      Geopoint partnerGeopoint = const Geopoint(latitude: 0, longitude: 0),
       CameraPosition cameraPosition =
           const CameraPosition(target: LatLng(0, 0), zoom: 1)}) {
     return _MapState(
+      isLoading: isLoading,
       partnerGeopoint: partnerGeopoint,
       cameraPosition: cameraPosition,
     );
@@ -31,6 +33,7 @@ const $MapState = _$MapStateTearOff();
 
 /// @nodoc
 mixin _$MapState {
+  bool get isLoading;
   Geopoint get partnerGeopoint;
   CameraPosition get cameraPosition;
 
@@ -41,7 +44,10 @@ mixin _$MapState {
 abstract class $MapStateCopyWith<$Res> {
   factory $MapStateCopyWith(MapState value, $Res Function(MapState) then) =
       _$MapStateCopyWithImpl<$Res>;
-  $Res call({Geopoint partnerGeopoint, CameraPosition cameraPosition});
+  $Res call(
+      {bool isLoading,
+      Geopoint partnerGeopoint,
+      CameraPosition cameraPosition});
 
   $GeopointCopyWith<$Res> get partnerGeopoint;
 }
@@ -56,10 +62,12 @@ class _$MapStateCopyWithImpl<$Res> implements $MapStateCopyWith<$Res> {
 
   @override
   $Res call({
+    Object isLoading = freezed,
     Object partnerGeopoint = freezed,
     Object cameraPosition = freezed,
   }) {
     return _then(_value.copyWith(
+      isLoading: isLoading == freezed ? _value.isLoading : isLoading as bool,
       partnerGeopoint: partnerGeopoint == freezed
           ? _value.partnerGeopoint
           : partnerGeopoint as Geopoint,
@@ -85,7 +93,10 @@ abstract class _$MapStateCopyWith<$Res> implements $MapStateCopyWith<$Res> {
   factory _$MapStateCopyWith(_MapState value, $Res Function(_MapState) then) =
       __$MapStateCopyWithImpl<$Res>;
   @override
-  $Res call({Geopoint partnerGeopoint, CameraPosition cameraPosition});
+  $Res call(
+      {bool isLoading,
+      Geopoint partnerGeopoint,
+      CameraPosition cameraPosition});
 
   @override
   $GeopointCopyWith<$Res> get partnerGeopoint;
@@ -102,10 +113,12 @@ class __$MapStateCopyWithImpl<$Res> extends _$MapStateCopyWithImpl<$Res>
 
   @override
   $Res call({
+    Object isLoading = freezed,
     Object partnerGeopoint = freezed,
     Object cameraPosition = freezed,
   }) {
     return _then(_MapState(
+      isLoading: isLoading == freezed ? _value.isLoading : isLoading as bool,
       partnerGeopoint: partnerGeopoint == freezed
           ? _value.partnerGeopoint
           : partnerGeopoint as Geopoint,
@@ -119,11 +132,18 @@ class __$MapStateCopyWithImpl<$Res> extends _$MapStateCopyWithImpl<$Res>
 /// @nodoc
 class _$_MapState with DiagnosticableTreeMixin implements _MapState {
   const _$_MapState(
-      {this.partnerGeopoint,
+      {this.isLoading = true,
+      this.partnerGeopoint = const Geopoint(latitude: 0, longitude: 0),
       this.cameraPosition =
           const CameraPosition(target: LatLng(0, 0), zoom: 1)})
-      : assert(cameraPosition != null);
+      : assert(isLoading != null),
+        assert(partnerGeopoint != null),
+        assert(cameraPosition != null);
 
+  @JsonKey(defaultValue: true)
+  @override
+  final bool isLoading;
+  @JsonKey(defaultValue: const Geopoint(latitude: 0, longitude: 0))
   @override
   final Geopoint partnerGeopoint;
   @JsonKey(defaultValue: const CameraPosition(target: LatLng(0, 0), zoom: 1))
@@ -132,7 +152,7 @@ class _$_MapState with DiagnosticableTreeMixin implements _MapState {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'MapState(partnerGeopoint: $partnerGeopoint, cameraPosition: $cameraPosition)';
+    return 'MapState(isLoading: $isLoading, partnerGeopoint: $partnerGeopoint, cameraPosition: $cameraPosition)';
   }
 
   @override
@@ -140,6 +160,7 @@ class _$_MapState with DiagnosticableTreeMixin implements _MapState {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'MapState'))
+      ..add(DiagnosticsProperty('isLoading', isLoading))
       ..add(DiagnosticsProperty('partnerGeopoint', partnerGeopoint))
       ..add(DiagnosticsProperty('cameraPosition', cameraPosition));
   }
@@ -148,6 +169,9 @@ class _$_MapState with DiagnosticableTreeMixin implements _MapState {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other is _MapState &&
+            (identical(other.isLoading, isLoading) ||
+                const DeepCollectionEquality()
+                    .equals(other.isLoading, isLoading)) &&
             (identical(other.partnerGeopoint, partnerGeopoint) ||
                 const DeepCollectionEquality()
                     .equals(other.partnerGeopoint, partnerGeopoint)) &&
@@ -159,6 +183,7 @@ class _$_MapState with DiagnosticableTreeMixin implements _MapState {
   @override
   int get hashCode =>
       runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(isLoading) ^
       const DeepCollectionEquality().hash(partnerGeopoint) ^
       const DeepCollectionEquality().hash(cameraPosition);
 
@@ -169,8 +194,12 @@ class _$_MapState with DiagnosticableTreeMixin implements _MapState {
 
 abstract class _MapState implements MapState {
   const factory _MapState(
-      {Geopoint partnerGeopoint, CameraPosition cameraPosition}) = _$_MapState;
+      {bool isLoading,
+      Geopoint partnerGeopoint,
+      CameraPosition cameraPosition}) = _$_MapState;
 
+  @override
+  bool get isLoading;
   @override
   Geopoint get partnerGeopoint;
   @override

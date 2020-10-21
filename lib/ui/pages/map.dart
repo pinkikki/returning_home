@@ -9,7 +9,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:returning_home/ui/controllers/map_controller.dart';
 import 'package:returning_home/ui/notifiers/auth_notifier.dart';
-import 'package:returning_home/ui/notifiers/loading_notifier.dart';
 import 'package:returning_home/ui/pages/push_notification_receiver.dart';
 import 'package:returning_home/ui/widgets/base.dart';
 import 'package:returning_home/ui/widgets/loading.dart';
@@ -57,12 +56,12 @@ class MapPageState extends State<MapPage> {
         mapControllerProvider.state.select((s) => s.partnerGeopoint));
     final cameraPosition = useProvider(
         mapControllerProvider.state.select((s) => s.cameraPosition));
-    final loadingOnInitialization = useProvider(
-        loadingNotifierProvider.select((s) => s.state.loadingOnInitialization));
+    final isLoading =
+        useProvider(mapControllerProvider.state.select((s) => s.isLoading));
     return Scaffold(
       body: BaseViewOnScaffold(
-        child: loadingOnInitialization
-            ? Loading() // FIXME: LoadingもBaseViewに持っていきたい
+        child: isLoading
+            ? Loading()
             : GoogleMap(
                 initialCameraPosition: cameraPosition,
                 myLocationEnabled: true,
