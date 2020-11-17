@@ -8,20 +8,35 @@ class FirebaseEmailAndPasswordAuth implements Auth {
     try {
       final result = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: userId, password: password);
-      authState = AuthState(
-          isAuthenticated: true,
-          credential: Credential(
-            refreshToken: result.user.refreshToken,
-            idToken: await result.user.getIdToken(),
-          ),
-          account: Account(
-            uid: result.user.uid,
-            userId: result.user.email,
-          ));
+      authState = await _createAuthState(result.user);
     } on FirebaseAuthException catch (e) {
-      throw AuthException('Failed to authenticate.', e);
+      throw AuthException('Failed to sign in with email and password.', e);
     }
 
     return authState;
+  }
+
+  @override
+  bool isAuthenticated() {
+    return FirebaseAuth.instance.currentUser != null;
+  }
+
+  @override
+  Future<AuthState> getAuthState() async {
+    return _createAuthState(FirebaseAuth.instance.currentUser);
+  }
+
+  Future<AuthState> _createAuthState(User user) async {
+    return AuthState(
+      isAuthenticated: true,
+      credential: Credential(
+        refreshToken: user.refreshToken,
+        idToken: await user.getIdToken(),
+      ),
+      account: Account(
+        uid: user.uid,
+        userId: user.email,
+      ),
+    );
   }
 }

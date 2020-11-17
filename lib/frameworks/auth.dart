@@ -36,6 +36,10 @@ class Account {
 
 abstract class Auth {
   Future<AuthState> signIn(String userId, String password);
+
+  bool isAuthenticated();
+
+  Future<AuthState> getAuthState();
 }
 
 class AuthException implements Exception {
