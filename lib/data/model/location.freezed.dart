@@ -8,6 +8,9 @@ part of 'location.dart';
 // **************************************************************************
 
 T _$identity<T>(T value) => value;
+Location _$LocationFromJson(Map<String, dynamic> json) {
+  return _Location.fromJson(json);
+}
 
 /// @nodoc
 class _$LocationTearOff {
@@ -20,6 +23,11 @@ class _$LocationTearOff {
       position: position,
     );
   }
+
+// ignore: unused_element
+  Location fromJson(Map<String, Object> json) {
+    return Location.fromJson(json);
+  }
 }
 
 /// @nodoc
@@ -31,6 +39,7 @@ mixin _$Location {
   String get userId;
   Position get position;
 
+  Map<String, dynamic> toJson();
   $LocationCopyWith<Location> get copyWith;
 }
 
@@ -105,11 +114,16 @@ class __$LocationCopyWithImpl<$Res> extends _$LocationCopyWithImpl<$Res>
   }
 }
 
+@JsonSerializable()
+
 /// @nodoc
 class _$_Location with DiagnosticableTreeMixin implements _Location {
   const _$_Location({@required this.userId, @required this.position})
       : assert(userId != null),
         assert(position != null);
+
+  factory _$_Location.fromJson(Map<String, dynamic> json) =>
+      _$_$_LocationFromJson(json);
 
   @override
   final String userId;
@@ -150,11 +164,18 @@ class _$_Location with DiagnosticableTreeMixin implements _Location {
   @override
   _$LocationCopyWith<_Location> get copyWith =>
       __$LocationCopyWithImpl<_Location>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$_$_LocationToJson(this);
+  }
 }
 
 abstract class _Location implements Location {
   const factory _Location(
       {@required String userId, @required Position position}) = _$_Location;
+
+  factory _Location.fromJson(Map<String, dynamic> json) = _$_Location.fromJson;
 
   @override
   String get userId;
@@ -162,6 +183,10 @@ abstract class _Location implements Location {
   Position get position;
   @override
   _$LocationCopyWith<_Location> get copyWith;
+}
+
+Position _$PositionFromJson(Map<String, dynamic> json) {
+  return _Position.fromJson(json);
 }
 
 /// @nodoc
@@ -175,6 +200,11 @@ class _$PositionTearOff {
       geopoint: geopoint,
     );
   }
+
+// ignore: unused_element
+  Position fromJson(Map<String, Object> json) {
+    return Position.fromJson(json);
+  }
 }
 
 /// @nodoc
@@ -186,6 +216,7 @@ mixin _$Position {
   String get geohash;
   Geopoint get geopoint;
 
+  Map<String, dynamic> toJson();
   $PositionCopyWith<Position> get copyWith;
 }
 
@@ -260,11 +291,16 @@ class __$PositionCopyWithImpl<$Res> extends _$PositionCopyWithImpl<$Res>
   }
 }
 
+@JsonSerializable()
+
 /// @nodoc
 class _$_Position with DiagnosticableTreeMixin implements _Position {
   const _$_Position({@required this.geohash, @required this.geopoint})
       : assert(geohash != null),
         assert(geopoint != null);
+
+  factory _$_Position.fromJson(Map<String, dynamic> json) =>
+      _$_$_PositionFromJson(json);
 
   @override
   final String geohash;
@@ -306,11 +342,18 @@ class _$_Position with DiagnosticableTreeMixin implements _Position {
   @override
   _$PositionCopyWith<_Position> get copyWith =>
       __$PositionCopyWithImpl<_Position>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$_$_PositionToJson(this);
+  }
 }
 
 abstract class _Position implements Position {
   const factory _Position(
       {@required String geohash, @required Geopoint geopoint}) = _$_Position;
+
+  factory _Position.fromJson(Map<String, dynamic> json) = _$_Position.fromJson;
 
   @override
   String get geohash;
@@ -318,6 +361,10 @@ abstract class _Position implements Position {
   Geopoint get geopoint;
   @override
   _$PositionCopyWith<_Position> get copyWith;
+}
+
+Geopoint _$GeopointFromJson(Map<String, dynamic> json) {
+  return _Geopoint.fromJson(json);
 }
 
 /// @nodoc
@@ -331,6 +378,11 @@ class _$GeopointTearOff {
       longitude: longitude,
     );
   }
+
+// ignore: unused_element
+  Geopoint fromJson(Map<String, Object> json) {
+    return Geopoint.fromJson(json);
+  }
 }
 
 /// @nodoc
@@ -342,6 +394,7 @@ mixin _$Geopoint {
   double get latitude;
   double get longitude;
 
+  Map<String, dynamic> toJson();
   $GeopointCopyWith<Geopoint> get copyWith;
 }
 
@@ -401,11 +454,16 @@ class __$GeopointCopyWithImpl<$Res> extends _$GeopointCopyWithImpl<$Res>
   }
 }
 
+@JsonSerializable()
+
 /// @nodoc
 class _$_Geopoint with DiagnosticableTreeMixin implements _Geopoint {
   const _$_Geopoint({@required this.latitude, @required this.longitude})
       : assert(latitude != null),
         assert(longitude != null);
+
+  factory _$_Geopoint.fromJson(Map<String, dynamic> json) =>
+      _$_$_GeopointFromJson(json);
 
   @override
   final double latitude;
@@ -447,11 +505,18 @@ class _$_Geopoint with DiagnosticableTreeMixin implements _Geopoint {
   @override
   _$GeopointCopyWith<_Geopoint> get copyWith =>
       __$GeopointCopyWithImpl<_Geopoint>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$_$_GeopointToJson(this);
+  }
 }
 
 abstract class _Geopoint implements Geopoint {
   const factory _Geopoint(
       {@required double latitude, @required double longitude}) = _$_Geopoint;
+
+  factory _Geopoint.fromJson(Map<String, dynamic> json) = _$_Geopoint.fromJson;
 
   @override
   double get latitude;

@@ -7,20 +7,10 @@ class FirebaseLocation implements LocationRepository {
 
   @override
   Stream<Location> streamByUserId(String userId) {
+    // TODO byUserId
     return collection.snapshots().map((event) {
       final data = event.docs.first.data();
-      final userId = data['userId'] as String;
-      final position = data['position'] as Map<String, dynamic>;
-      final geohash = position['geohash'] as String;
-      final geopoint = position['geopoint'] as GeoPoint;
-      return Location(
-          position: Position(
-              geohash: geohash,
-              geopoint: Geopoint(
-                latitude: geopoint.latitude,
-                longitude: geopoint.longitude,
-              )),
-          userId: userId);
+      return Location.fromJson(data);
     });
   }
 
