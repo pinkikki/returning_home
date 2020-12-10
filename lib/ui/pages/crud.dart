@@ -26,10 +26,12 @@ class _CrudState extends State<Crud> {
               final geo = Geoflutterfire();
               final point =
                   geo.point(latitude: 35.658034, longitude: 139.701636);
-              await firestore.collection('locations').add(<String, dynamic>{
+              final saved =
+                  await firestore.collection('locations').add(<String, dynamic>{
                 'position': point.data,
                 'userId': authState.state.account.userId,
               });
+              print(saved.id);
             },
           ),
           RaisedButton(
